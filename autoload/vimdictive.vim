@@ -12,8 +12,10 @@ let vimdictive_dicts = {
 function! vimdictive#lookup(dictionary, term)
   let host = g:vimdictive_dicts[a:dictionary]
   let results = []
+  let curl_cmd = get(g:, 'dict_curl_command', 'curl')
+  let curl_opts = get(g:, 'dict_curl_options', '')
   for db in host[1]
-    let r = system(g:dict_curl_command . ' -s ' . g:dict_curl_options . ' dict://' . host[0] . '/d:"' . a:term . '":' . db)
+    let r = system(curl_cmd . ' -s ' . curl_opts . ' dict://' . host[0] . '/d:"' . a:term . '":' . db)
     let result = s:uncurl(r, a:term, db)
     call add(results, result)
   endfor
