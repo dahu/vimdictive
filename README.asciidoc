@@ -1,0 +1,24 @@
+vimdictive
+----------
+
+__Finding meaning in your Vim__
+
+Vimdictive is a plugin for dict.org style dictionary and thesaurus
+lookups from within Vim.
+
+NOTE: This plugin is still in Alpha; experimenting with ideas.
+
+.Global Maps:
+
+* <leader>dm - Show meaning of word under cursor in the Preview Window.
+* <leader>ds - Show synonyms for word under cursor in the Preview Window.
+* <leader>df - Set the synonym filter.
+
+.Maps from within the Preview Window:
+
+* <enter> - Show meaning of word under cursor in the Preview Window.
+* <backspace> - Show synonyms for word under cursor in the Preview Window.
+* <F5> - Refresh Preview Window with most recent query.
+
+The curl approach in this plugin was borrowed from the
+https://github.com/szw/vim-dict.git[vim-dict] plugin.
