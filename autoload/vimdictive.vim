@@ -112,3 +112,25 @@ function! vimdictive#matches(term)
   return matches
 endfunction
 
+"-----
+
+function! vimdictive#rhyme(term)
+  let rhymes = []
+  if executable('rhyme')
+    let data = system('rhyme -m ' . a:term)
+    if data !~ '^\*\*\*\s\+.*wasn''t found'
+      for line in split(data, "\n")
+        if line =~ '^Finding perfect rhymes'
+          continue
+        endif
+        if line =~ '^\s*$'
+          continue
+        endif
+        let line = substitute(line, '^\d\+:\s\+', '', '')
+        let line = substitute(line, '(\d\+)', '', 'g')
+        call extend(rhymes, map(split(line, ',\s*'), 's:trim(v:val)'))
+      endfor
+    endif
+  endif
+  return rhymes
+endfunction
