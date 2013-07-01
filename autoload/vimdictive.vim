@@ -116,6 +116,9 @@ endfunction
 
 function! vimdictive#rhyme(term)
   let rhymes = []
+  if a:term =~ '^\s*$'
+    return []
+  endif
   if executable('rhyme')
     let data = system('rhyme -m ' . a:term)
     if data !~ '^\*\*\*\s\+.*wasn''t found'

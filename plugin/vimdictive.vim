@@ -2,19 +2,42 @@ function! s:FilterText()
   return exists('g:vimdictive_filter') ? g:vimdictive_filter : ''
 endfunction
 
+function! s:RhymeTerm()
+  return exists('g:vimdictive_rhyme_term') ? g:vimdictive_rhyme_term : ''
+endfunction
+
 function! s:PreviewWindow(purpose, term)
   let filter = s:FilterText()
-  let filter = filter == '' ? '' : ' =~ /' . filter . '/'
-  silent! exe "noautocmd botright pedit vimdictive:[" . a:purpose[0] . filter . "]'" . a:term . "'"
+  let filter = filter == '' ? '' : '/' . filter . '/'
+  let rhyme_term = s:RhymeTerm()
+  let rhyme_term = rhyme_term == '' ? '' : '{' . rhyme_term . '}'
+  let details = ''
+  if a:purpose =~? 'Synonyms'
+    let details = ':' . filter . rhyme_term
+  endif
+  silent! exe "noautocmd botright pedit vimdictive:[" . a:purpose[0] . details . ":'" . a:term . "']"
   noautocmd wincmd P
   setlocal modifiable
   setlocal buftype=nofile ff=unix
   setlocal nobuflisted
 endfunction
 
-function! s:FilterSynonyms(synonyms)
+function! s:FilterByRegex(synonyms)
   let filter = s:FilterText()
   return filter(a:synonyms, 'v:val =~ filter')
+endfunction
+
+function! s:FilterByRhyme(synonyms)
+  let rhymes = vimdictive#rhyme(s:RhymeTerm())
+  if rhymes == []
+    return a:synonyms
+  else
+    return filter(a:synonyms, 'index(rhymes, v:val) != -1')
+  endif
+endfunction
+
+function! s:FilterSynonyms(synonyms)
+  return s:FilterByRegex(s:FilterByRhyme(a:synonyms))
 endfunction
 
 function! s:PreviewRefresh()
@@ -62,6 +85,17 @@ function! PreviewFilter(filter)
   call s:PreviewRefresh()
 endfunction
 
+function! PreviewRhyme(rhyme)
+  if a:rhyme != ''
+    let rhyme = a:rhyme
+  else
+    let rhyme = input('Rhyme: ', s:RhymeTerm())
+  endif
+  let g:vimdictive_rhyme_term = rhyme
+  call s:PreviewRefresh()
+endfunction
+
 nnoremap <leader>dm :silent call PreviewTerm('Meanings', expand('<cword>'))<cr>
 nnoremap <leader>ds :silent call PreviewTerm('Synonyms', expand('<cword>'))<cr>
 nnoremap <leader>df :call PreviewFilter('')<cr>
+nnoremap <leader>dr :call PreviewRhyme('')<cr>
