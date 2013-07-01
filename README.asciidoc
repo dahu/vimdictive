@@ -10,9 +10,15 @@ NOTE: This plugin is still in Alpha; experimenting with ideas.
 
 .Global Maps:
 
-* <leader>dm - Show meaning of word under cursor in the Preview Window.
-* <leader>ds - Show synonyms for word under cursor in the Preview Window.
-* <leader>df - Set the synonym filter.
+* <leader>dm - Show meaning of word under cursor in the Preview
+Window.
+* <leader>ds - Show synonyms for word under cursor in the Preview
+Window.
+* <leader>df - Set the synonym regex filter.
+* <leader>dr - Set the synonym rhyme filter.
++
+NOTE: The rhyme filter depends on having
+http://rhyme.sourceforge.net/[rhyme] installed.
 
 .Maps from within the Preview Window:
 
