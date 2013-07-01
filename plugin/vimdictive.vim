@@ -41,6 +41,9 @@ function! PreviewTerm(purpose, term)
     let data = s:FilterSynonyms(vimdictive#synonyms(a:term))
   endif
   if data == []
+    let data = vimdictive#matches(a:term)
+  endif
+  if data == []
     call setline(1, ['No ' . a:purpose . ' for term: ' . a:term])
   else
     call setline(1, data)
