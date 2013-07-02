@@ -60,9 +60,14 @@ function! s:PreviewWindow(purpose, term)
   setlocal nobuflisted
 endfunction
 
+function! s:FilterWith(expression)
+  return '(' . a:expression . ') || (v:val =~ "^\s*$") || (v:val =~ "--- Antonyms")'
+endfunction
+
 function! s:FilterByRegex(synonyms)
   let filter = s:FilterText()
-  return filter(a:synonyms, 'v:val =~ filter')
+  " return filter(a:synonyms, 'v:val =~ filter')
+  return filter(a:synonyms, s:FilterWith('v:val =~ filter'))
 endfunction
 
 function! s:FilterByRhyme(synonyms)
@@ -70,7 +75,7 @@ function! s:FilterByRhyme(synonyms)
   if empty(rhymes)
     return a:synonyms
   else
-    return filter(a:synonyms, 'index(rhymes, v:val) != -1')
+    return filter(a:synonyms, s:FilterWith('index(rhymes, v:val) != -1'))
   endif
 endfunction
 
@@ -104,6 +109,9 @@ function! PreviewTerm(purpose, term)
     let data = vimdictive#meanings(a:term)
   else
     let data = vimdictive#synonyms(a:term)
+    let ants = vimdictive#antonyms(a:term)
+    call extend(data, ['', '--- Antonyms ---', ''])
+    call extend(data, ants)
   endif
   if empty(data)
     let data = vimdictive#matches(a:term)

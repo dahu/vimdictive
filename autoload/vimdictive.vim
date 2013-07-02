@@ -174,6 +174,25 @@ function! vimdictive#rhyme(term)
   return rhymes
 endfunction
 
+"-----
+
+function! vimdictive#antonyms(term)
+  let ants = []
+  if a:term =~ '^\s*$'
+    return []
+  endif
+  if executable('wn')
+    let data = system('wn ' . a:term . ' -antsn -antsv -antsa -antsr')
+    for line in split(data, "\n")
+      if line =~ '[-=]>'
+        let line = substitute(line, '^.*[-=]>\s*', '', '')
+        call extend(ants, map(split(line, ',\s*'), 's:trim(v:val)'))
+      endif
+    endfor
+  endif
+  return ants
+endfunction
+
 " Teardown:{{{1
 "reset &cpo back to users setting
 let &cpo = s:save_cpo
