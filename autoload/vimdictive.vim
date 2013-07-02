@@ -1,27 +1,46 @@
+" Vim library for short description
+" Maintainer:	Barry Arthur     <barry.arthur@gmail.com>
+"       	Israel Chauca F. <israelchauca@gmail.com>
+" Version:	0.1
+" Description:	Long description.
+" Last Change:	2013-07-01
+" License:	Vim License (see :help license)
+" Location:	autoload/vimdictive.vim
+" Website:	https://github.com/dahu/vimdictive
+"
+" See vimdictive.txt for help.  This can be accessed by doing:
+"
+" :helptags ~/.vim/doc
+" :help vimdictive
+
+" Vimscript Setup: {{{1
+" Allow use of line continuation.
+let s:save_cpo = &cpo
+set cpo&vim
+
+" load guard
+" uncomment after plugin development
+" Remove the conditions you do not need, they are there just as an example.
+"if exists("g:loaded_lib_vimdictive")
+"      \ || v:version < 700
+"      \ || v:version == 703 && !has('patch338')
+"      \ || &compatible
+"  let &cpo = s:save_cpo
+"  finish
+"endif
+"let g:loaded_lib_vimdictive = 1
+
 let vimdictive_dicts = {
       \ 'dictionary' : ['dict.org', ['gcide']],
       \ 'thesaurus' : ['dict.org', ['moby-thes']]
       \ }
-
 " If you have your own dict server:
 " let vimdictive_dicts = {
 "       \ 'dictionary' : ['localhost', ['gcide']],
 "       \ 'thesaurus' : ['localhost', ['moby-thesaurus']]
 "       \ }
 
-function! vimdictive#lookup(dictionary, term, strategy)
-  let strategy = {'definition' : 'd', 'match' : 'm'}[a:strategy]
-  let host = g:vimdictive_dicts[a:dictionary]
-  let results = []
-  let curl_cmd = get(g:, 'dict_curl_command', 'curl')
-  let curl_opts = get(g:, 'dict_curl_options', '')
-  for db in host[1]
-    let r = system(curl_cmd . ' -s ' . curl_opts . ' dict://' . host[0] . '/' . strategy . ':"' . a:term . '":' . db)
-    let result = s:uncurl(r, a:term, db, strategy)
-    call add(results, result)
-  endfor
-  return results
-endfunction
+" Private Functions: {{{1
 
 function! s:trim(text)
   return substitute(substitute(a:text, '^\_s*', '', ''), '\_s*$', '', '')
@@ -82,6 +101,23 @@ function! s:uncurl_definition(text, term, db)
         \ 'term' : a:term, 'db' : a:db, 'entry' : s:trim(r)}
 endfunction
 
+
+" Library Interface: {{{1
+
+function! vimdictive#lookup(dictionary, term, strategy)
+  let strategy = {'definition' : 'd', 'match' : 'm'}[a:strategy]
+  let host = g:vimdictive_dicts[a:dictionary]
+  let results = []
+  let curl_cmd = get(g:, 'dict_curl_command', 'curl')
+  let curl_opts = get(g:, 'dict_curl_options', '')
+  for db in host[1]
+    let r = system(curl_cmd . ' -s ' . curl_opts . ' dict://' . host[0] . '/' . strategy . ':"' . a:term . '":' . db)
+    let result = s:uncurl(r, a:term, db, strategy)
+    call add(results, result)
+  endfor
+  return results
+endfunction
+
 function! vimdictive#entries(dictionary, term, strategy)
   let entries = vimdictive#lookup(a:dictionary, a:term, a:strategy)
   return map(entries, 'v:val["entry"]')
@@ -137,3 +173,9 @@ function! vimdictive#rhyme(term)
   endif
   return rhymes
 endfunction
+
+" Teardown:{{{1
+"reset &cpo back to users setting
+let &cpo = s:save_cpo
+
+" vim: set sw=2 sts=2 et fdm=marker:
