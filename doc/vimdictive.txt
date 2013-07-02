@@ -101,10 +101,13 @@ Vimdictive depends on the following external tools & services:
 1. http://dict.org/ - for meanings, synonyms and matches.
    See |vimdictive-configuration| to override this.
 
-2. The command-line tool 'rhyme' - for filtering synonyms by rhyme.
+2. The command-line tool "curl" - for accessing the dictionary server.
+   Available through your package manager on linux distros.
+
+3. The command-line tool "rhyme" - for filtering synonyms by rhyme.
    Available from: http://rhyme.sourceforge.net/
 
-3. The command-line tool 'wn' - for antonyms.
-   Available as the 'wordnet' package on linux distros.
+4. The command-line tool "wn" - for antonyms.
+   Available as the "wordnet" package on linux distros.
 
  vim:tw=78:ts=8:ft=help:norl:
