@@ -6,8 +6,6 @@ __Finding meaning in your Vim__
 Vimdictive is a plugin for dict.org style dictionary and thesaurus
 lookups from within Vim.
 
-NOTE: This plugin is still in Alpha; experimenting with ideas.
-
 .Global Maps:
 
 * <leader>dm - Show meaning of word under cursor in the Preview
@@ -22,9 +20,10 @@ http://rhyme.sourceforge.net/[rhyme] installed.
 
 .Maps from within the Preview Window:
 
-* <enter> - Show meaning of word under cursor in the Preview Window.
-* <backspace> - Show synonyms for word under cursor in the Preview Window.
-* <F5> - Refresh Preview Window with most recent query.
+* <enter> - Show meaning of word under cursor in the Vimdictive browser (window).
+* <backspace> - Show synonyms for word under cursor in the Vimdictive browser.
+* q - Close the Vimdictive browser.
+* <F5> - Refresh Vimdictive browser with most recent query results.
 
 The curl approach in this plugin was borrowed from the
 https://github.com/szw/vim-dict.git[vim-dict] plugin.
