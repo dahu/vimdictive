@@ -30,16 +30,6 @@ set cpo&vim
 "endif
 "let g:loaded_lib_vimdictive = 1
 
-let vimdictive_dicts = {
-      \ 'dictionary' : ['dict.org', ['gcide']],
-      \ 'thesaurus' : ['dict.org', ['moby-thes']]
-      \ }
-" If you have your own dict server:
-" let vimdictive_dicts = {
-"       \ 'dictionary' : ['localhost', ['gcide']],
-"       \ 'thesaurus' : ['localhost', ['moby-thesaurus']]
-"       \ }
-
 " Private Functions: {{{1
 
 function! s:trim(text)

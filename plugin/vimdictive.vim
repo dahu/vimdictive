@@ -32,6 +32,19 @@ set cpo&vim
 "let g:loaded_vimdictive = 1
 
 " Options: {{{1
+if !exists('g:vimdictive_dicts')
+  let vimdictive_dicts = {
+        \ 'dictionary' : ['dict.org', ['gcide']],
+        \ 'thesaurus' : ['dict.org', ['moby-thes']]
+        \ }
+endif
+
+" If you have your own dict server:
+" let vimdictive_dicts = {
+"       \ 'dictionary' : ['localhost', ['gcide']],
+"       \ 'thesaurus' : ['localhost', ['moby-thesaurus']]
+"       \ }
+
 
 " Private Functions: {{{1
 
