@@ -61,10 +61,13 @@ function! PreviewTerm(purpose, term)
   if a:purpose == 'Meanings'
     let data = vimdictive#meanings(a:term)
   else
-    let data = s:FilterSynonyms(vimdictive#synonyms(a:term))
+    let data = vimdictive#synonyms(a:term)
   endif
   if data == []
     let data = vimdictive#matches(a:term)
+  endif
+  if a:purpose == 'Synonyms'
+    let data = s:FilterSynonyms(data)
   endif
   if data == []
     call setline(1, ['No ' . a:purpose . ' for term: ' . a:term])
