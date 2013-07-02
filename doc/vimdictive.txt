@@ -1,0 +1,110 @@
+*vimdictive.txt*	dict.org compatible dictionarty & thesaurus browser
+
+
+			VIM REFERENCE MANUAL	by Barry Arthur
+
+
+Help on using vimdictive                                          *vimdictive*
+
+1. Introduction				|vimdictive-intro|
+2. Statusline				|vimdictive-statusline|
+3. Configuration			|vimdictive-configuration|
+4. External Depedencies			|vimdictive-external-dependencies|
+
+==============================================================================
+ 1. INTRODUCTION                                            *vimdictive-intro*
+
+Vimdictive provides dict.org compatible dictionary and thesaurus
+lookups within Vim, showing the results in a |preview-window|. With
+regular expression and rhyme filters, Vimdictive is intended to assist
+in the selection of the choicest words when writing prose.
+
+COMING SOON: Antonyms!
+
+Vimdictive Browser Maps~                             *vimdictive-browser-maps*
+
+The Vimdictive browser is a Vim preview-window with the following maps:
+
+* <enter>     Show the meanings of the word under the cursor.
+* <backspace> Show the synonyms of the word under the cursor.
+* q           Close the Vimdictive browser (window).
+* <F5>        Refresh the browser with the most recent query results.
+
+Vimdictive Global Maps~                               *vimdictive-global-maps*
+
+Pressing <leader>dm from any buffer within Vim will open the
+Vimdictive browser with the meanings of the word under the cursor.
+Likewise, <leader>ds will show the synonyms of that word. The synonym
+list can be filtered by a regular expression and by rhyme. So, for
+example, you can show the synonyms of the word "call" that rhyme with
+the word "pray" and that match the regex /^b/ (that is, start with the
+letter "b").
+
+The global Vimdictive commands and their default key-maps are:
+
+* Show meanings of word under cursor.
+  Default Key: <leader>dm
+  Override Plug Map: <Plug>vimdictive_meanings
+
+* Show synonyms of word under cursor.
+  Default Key: <leader>ds
+  Override Plug Map: <Plug>vimdictive_synonyms
+
+* Set the synonym regex filter.
+  Default Key: <leader>df
+  Override Plug Map: <Plug>vimdictive_filter
+
+* Set the synonym rhyme filter.
+  Default Key: <leader>dr
+  Override Plug Map: <Plug>vimdictive_filter_rhyme
+
+You can override these keymaps in your |$MYVIMRC| with lines like: >
+
+  nmap <F2> <Plug>vimdictive_meanings
+
+<
+
+==============================================================================
+ 2. STATUSLINE                                         *vimdictive-statusline*
+
+The Vimdictive browser window uses a statusline of the following format:
+
+  vimdictive:[TYPE:/REGEX/{RHYME}:'WORD'] [0% line 1 of 2]
+
+Where:
+
+-  TYPE  : 'M' for meanings, 'S' for synonyms.
+-  REGEX : The current regular expression for filtering synonyms.
+-  RHYME : The current rhyming word for filtering synonyms.
+-  WORD  : The current dictionary term.
+
+The REGEX and RHYME are only visible when in Synonym mode.
+
+==============================================================================
+ 3. CONFIGURATION                                   *vimdictive-configuration*
+
+By default, Vimdictive accesses http://dict.org/ for dictionary and
+thesaurus lookups. You can customise this with a setting in your
+|$MYVIMRC| like:>
+
+  let vimdictive_dicts = {
+        \ 'dictionary' : ['localhost', ['gcide']],
+        \ 'thesaurus' : ['localhost', ['moby-thesaurus']]
+        \ }
+<
+
+==============================================================================
+ 4. EXTERNAL DEPENDENCIES                   *vimdictive-external-dependencies*
+
+Vimdictive depends on the following external tools & services:
+
+1. http://dict.org/ - for meanings, synonyms and matches.
+   See |vimdictive-configuration| to override this.
+
+2. The command-line tool 'rhyme' - for filtering synonyms by rhyme.
+   Available from: http://rhyme.sourceforge.net/
+
+3. The command-line tool 'wn' - for antonyms.
+   Available as the 'wordnet' package on linux distros.
+
+ vim:tw=78:ts=8:ft=help:norl:

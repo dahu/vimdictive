@@ -1,8 +1,8 @@
-" Vim global plugin for short description
+" dict.org dictionarty & thesaurus browser
 " Maintainer:	Barry Arthur     <barry.arthur@gmail.com>
 "       	Israel Chauca F. <israelchauca@gmail.com>
 " Version:	0.1
-" Description:	Long description.
+" Description:	A dict.org compatible dictionarty & thesaurus browser for Vim
 " Last Change:	2013-07-01
 " License:	Vim License (see :help license)
 " Location:	plugin/vimdictive.vim
