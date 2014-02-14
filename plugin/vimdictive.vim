@@ -174,7 +174,7 @@ nnoremap <silent> <Plug>vimdictive_meanings
       \ :silent call PreviewTerm('Meanings', expand('<cword>'))<CR>
 
 nnoremap <silent> <Plug>vimdictive_prior_meaning
-      \ :silent call PreviewTerm('Meanings', remove(t:term_stack, -1))<CR>
+      \ :silent if len(t:term_stack) > 1 <bar> call PreviewTerm('Meanings', remove(t:term_stack, -2)) <bar> endif<CR>
 
 nnoremap <silent> <Plug>vimdictive_synonyms
       \ :silent call PreviewTerm('Synonyms', expand('<cword>'))<CR>
