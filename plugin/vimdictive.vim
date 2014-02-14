@@ -48,6 +48,8 @@ endif
 
 " Private Functions: {{{1
 
+let t:term_stack = []
+
 function! s:FilterText()
   return get(g:, 'vimdictive_filter', '')
 endfunction
@@ -116,7 +118,13 @@ endfunction
 function! PreviewTerm(purpose, term)
   call s:PreviewWindow(a:purpose, a:term)
   let b:purpose = a:purpose
-  let b:term = a:term
+  if !exists('b:term')
+    let b:term = a:term
+    call add(t:term_stack, a:term)
+  elseif b:term != a:term
+    let b:term = a:term
+    call add(t:term_stack, a:term)
+  endif
 
   if a:purpose == 'Meanings'
     let data = vimdictive#meanings(a:term)
@@ -165,6 +173,9 @@ endfunction
 nnoremap <silent> <Plug>vimdictive_meanings
       \ :silent call PreviewTerm('Meanings', expand('<cword>'))<CR>
 
+nnoremap <silent> <Plug>vimdictive_prior_meaning
+      \ :silent call PreviewTerm('Meanings', remove(t:term_stack, -1))<CR>
+
 nnoremap <silent> <Plug>vimdictive_synonyms
       \ :silent call PreviewTerm('Synonyms', expand('<cword>'))<CR>
 
@@ -174,6 +185,10 @@ nnoremap <silent> <Plug>vimdictive_filter_rhyme :call PreviewRhyme('')<CR>
 
 if !hasmapto('<Plug>vimdictive_meanings')
   silent! nmap <unique><silent> <leader>dm <Plug>vimdictive_meanings
+endif
+
+if !hasmapto('<Plug>vimdictive_prior_meaning')
+  silent! nmap <unique><silent> <leader>dp <Plug>vimdictive_prior_meaning
 endif
 
 if !hasmapto('<Plug>vimdictive_synonyms')
