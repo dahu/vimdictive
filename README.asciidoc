@@ -3,6 +3,10 @@ vimdictive
 
 __Finding meaning in your Vim__
 
+TIP: If you like vimdictive and want to share the W00t!, I'm grateful for
+https://www.gittip.com/bairuidahu/[tips] or
+http://of-vim-and-vigor.blogspot.com/[beverages].
+
 Vimdictive is a plugin for dict.org style dictionary and thesaurus
 lookups from within Vim.
 
@@ -24,6 +28,17 @@ http://rhyme.sourceforge.net/[rhyme] installed.
 * <backspace> - Show synonyms for word under cursor in the Vimdictive browser.
 * q - Close the Vimdictive browser.
 * <F5> - Refresh Vimdictive browser with most recent query results.
+
+.Configuration
+
+By default, Vimdictive accesses http://dict.org/ for dictionary
+and thesaurus lookups. You can customise this with a setting in
+your `~/.vimrc` like:
+
+  let vimdictive_dicts = {
+        \ 'dictionary' : ['localhost', ['gcide']],
+        \ 'thesaurus' : ['localhost', ['moby-thesaurus']]
+        \ }
 
 The curl approach in this plugin was borrowed from the
 https://github.com/szw/vim-dict.git[vim-dict] plugin.
