@@ -48,7 +48,7 @@ endif
 
 " Private Functions: {{{1
 
-let t:term_stack = []
+let s:term_stack = []
 
 function! s:FilterText()
   return get(g:, 'vimdictive_filter', '')
@@ -113,17 +113,32 @@ function! s:PreviewWindowMaps()
   nnoremap <buffer><silent><f5> :call <SID>PreviewRefresh()<cr>
 endfunction
 
+function! s:PushTermStack(term)
+  call add(s:term_stack, a:term)
+endfunction
+
+function! s:PopTermStack()
+  if len(s:term_stack) < 2
+    unsilent echo "No previous term"
+  else
+    " Remove both the current term and the previous term, returning only
+    " previous to be re-added in PreviewTerm()
+    return remove(s:term_stack, -2, -1)[0]
+  endif
+  return ""
+endfunction
+
 " Public Interface: {{{1
 
 function! PreviewTerm(purpose, term)
+  if a:term == ""
+    return
+  endif
   call s:PreviewWindow(a:purpose, a:term)
   let b:purpose = a:purpose
-  if !exists('b:term')
+  if !exists('b:term') || b:term != a:term
     let b:term = a:term
-    call add(t:term_stack, a:term)
-  elseif b:term != a:term
-    let b:term = a:term
-    call add(t:term_stack, a:term)
+    call s:PushTermStack(a:term)
   endif
 
   if a:purpose == 'Meanings'
@@ -174,7 +189,7 @@ nnoremap <silent> <Plug>vimdictive_meanings
       \ :silent call PreviewTerm('Meanings', expand('<cword>'))<CR>
 
 nnoremap <silent> <Plug>vimdictive_prior_meaning
-      \ :silent if len(t:term_stack) > 1 <bar> call PreviewTerm('Meanings', remove(t:term_stack, -2)) <bar> endif<CR>
+      \ :silent call PreviewTerm('Meanings', <sid>PopTermStack()) <CR>
 
 nnoremap <silent> <Plug>vimdictive_synonyms
       \ :silent call PreviewTerm('Synonyms', expand('<cword>'))<CR>
